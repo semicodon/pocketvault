@@ -10,9 +10,9 @@ const MASTER_KEY = Buffer.from(env.ENCRYPTION_KEY, 'hex');
 export function encryptField(plaintext: string): string {
   const iv = crypto.randomBytes(12); // 96-bit random IV
   const cipher = crypto.createCipheriv(ALGORITHM, MASTER_KEY, iv);
-  const authTag = cipher.getAuthTag().toString('hex');
   let encrypted = cipher.update(plaintext, 'utf8', 'hex');
   encrypted += cipher.final('hex');
+  const authTag = cipher.getAuthTag().toString('hex');
 
   return `${iv.toString('hex')}:${authTag}:${encrypted}`;
 }
